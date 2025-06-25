@@ -9,6 +9,7 @@ let foodscore3 = 20               //食物3加的分数
 let foodWeight = [10, 3, 1]       //食物权重
 let localStorageKey = 'maxScore_NIMOKO'
 
+let maxScore = Number(localStorage.getItem(localStorageKey))
 const cellSize = 22            //每个格子的大小
 const areaSize = cellSize * 12 //游戏区域的大小
 let moveSpeed                  //移动速度
@@ -18,7 +19,6 @@ let tailSpeed                  //尾巴变短速度
 let foodSpeed2                 //食物移动速度(随机路线)
 let foodSpeed31                //食物移动速度(固定路线，速度不变)
 let foodSpeed32                //食物移动速度(固定路线，速度变化)
-let maxScore = Number(localStorage.getItem(localStorageKey))
 let totalScore                 //总分数
 let snakeScore                 //储存分数
 let tail                       //尾巴要加多长
@@ -1173,7 +1173,7 @@ function pauseButtonControl() {  //暂停键控制
 function speedStart() {  //加速开始
   if (!speedUp) {
     speedUp = true
-    speedButton.style.backgroundImage = 'url(./assets/pause_hold.png)'
+    speedButton.style.backgroundImage = 'url(./assets/speed_hold.png)'
     moveSpeed = rushSpeed
     foodSpeed32 = rushSpeed
   }
