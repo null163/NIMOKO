@@ -3,7 +3,11 @@ let bound1 = 150                  //第一阶段分数
 let bound2 = 450                  //第二阶段分数
 let emptyScoreColor = '#d5e4fe'   //分数栏分数颜色（空白部分）
 let ScoreColor = '#b2c2ed'        //分数栏分数颜色（有值部分）
-let localStorageString = 'maxScore_NIMOKO'
+let foodscore1 = 10               //食物1加的分数
+let foodscore2 = 15               //食物2加的分数
+let foodscore3 = 20               //食物3加的分数
+let foodWeight = [10, 3, 1]       //食物权重
+let localStorageKey = 'maxScore_NIMOKO'
 
 const cellSize = 22            //每个格子的大小
 const areaSize = cellSize * 12 //游戏区域的大小
@@ -14,12 +18,9 @@ let tailSpeed                  //尾巴变短速度
 let foodSpeed2                 //食物移动速度(随机路线)
 let foodSpeed31                //食物移动速度(固定路线，速度不变)
 let foodSpeed32                //食物移动速度(固定路线，速度变化)
-let maxScore = Number(localStorage.getItem(localStorageString))
+let maxScore = Number(localStorage.getItem(localStorageKey))
 let totalScore                 //总分数
 let snakeScore                 //储存分数
-let foodscore1                 //食物1加的分数
-let foodscore2                 //食物2加的分数
-let foodscore3                 //食物3加的分数
 let tail                       //尾巴要加多长
 let speedUp                    //是否加速
 let eatFood                    //是否吃到食物
@@ -39,7 +40,6 @@ let food                //食物的位置
 let movingFood31 = []   //食物的位置(固定路线 固定速度)
 let movingFood32 = []   //食物的位置(固定路线 速度变化)
 let movingFood2 = []    //食物的位置(随机路线)
-let foodWeight = []     //食物权重
 let hole                //洞的位置
 
 const whole = document.querySelector('.whole')
@@ -82,7 +82,6 @@ let musicWidth, musicHeight, musicTop, musicLeft, continueHeight, againWidth
 let continueWidth, continueTop, continueLeft, goHeight, goWidth, scAniWidth
 let maxScore1, maxScore2, currentScore1, currentScore2, scAniHeight, scAniFont1
 let goContainerHeight, goContainerwidth, goContainerTop, goContainerLeft
-let goWidth_tmp
 let keyFrames, timing, animation, scAniOutline, keyFrames2, timing2, keyFrames3
 
 let loadingTop, loadingFont
@@ -244,7 +243,6 @@ function resize() {
   // 游戏结束界面 游戏结束界面-背景
   goHeight = 201 / 659 * windowHeight
   goWidth = 214 / 659 * windowHeight
-  goWidth_tmp = 260 / 659 * windowHeight
   goTop = 15 / 659 * windowHeight
   goLeft = (windowWidth - goWidth - 4 / 659 * windowHeight) / 2
 
@@ -360,9 +358,6 @@ function init() { //初始化
   foodSpeed32 = defaultSpeed
   totalScore = 0
   snakeScore = 0
-  foodscore1 = 5
-  foodscore2 = 10
-  foodscore3 = 15
   scoreRefresh(0)
   scoreText.style.color = emptyScoreColor
   tail = 0
@@ -377,7 +372,6 @@ function init() { //初始化
   settle = false
   settling = false
   snake = [{ x: 6, y: 6, dirX: 0, dirY: 1 }]
-  foodWeight = [10, 3, 1]
   food = []
   movingFood31 = []
   movingFood32 = []
@@ -764,7 +758,7 @@ function drawGame() { //打印贴图
     if (gameOver) head.src = './assets/deadV.png'
     else if (speedUp) head.src = './assets/rushV.png'
     else head.src = './assets/headV.png'
-    div.style.top = (snake[0].y * cellSize - 9) / 659 * windowHeight + 'px'
+    div.style.top = (snake[0].y * cellSize - 11) / 659 * windowHeight + 'px'
     div.style.left = (snake[0].x * cellSize - 4.5) / 659 * windowHeight + 'px'
     head.style.width = (cellSize + 7.7) / 659 * windowHeight + 'px'
     head.style.height = (cellSize + 12) / 659 * windowHeight + 'px'
@@ -778,7 +772,7 @@ function drawGame() { //打印贴图
     else if (speedUp) head.src = './assets/rushV.png'
     else head.src = './assets/headV.png'
     head.classList.add('flipVH')
-    div.style.top = (snake[0].y * cellSize - 2) / 659 * windowHeight + 'px'
+    div.style.top = (snake[0].y * cellSize - 0) / 659 * windowHeight + 'px'
     div.style.left = (snake[0].x * cellSize - 3) / 659 * windowHeight + 'px'
     head.style.width = (cellSize + 7.1) / 659 * windowHeight + 'px'
     head.style.height = (cellSize + 12) / 659 * windowHeight + 'px'
@@ -792,7 +786,7 @@ function drawGame() { //打印贴图
     else if (speedUp) head.src = './assets/rushH.png'
     else head.src = './assets/headH.png'
     div.style.top = (snake[0].y * cellSize - 4.6) / 659 * windowHeight + 'px'
-    div.style.left = (snake[0].x * cellSize - 2) / 659 * windowHeight + 'px'
+    div.style.left = (snake[0].x * cellSize) / 659 * windowHeight + 'px'
     head.style.width = (cellSize + 13) / 659 * windowHeight + 'px'
     head.style.height = (cellSize + 8.1) / 659 * windowHeight + 'px'
   }
@@ -806,7 +800,7 @@ function drawGame() { //打印贴图
     else head.src = './assets/headH.png'
     head.classList.add('flipVH')
     div.style.top = (snake[0].y * cellSize - 3) / 659 * windowHeight + 'px'
-    div.style.left = (snake[0].x * cellSize - 10) / 659 * windowHeight + 'px'
+    div.style.left = (snake[0].x * cellSize - 12) / 659 * windowHeight + 'px'
     head.style.width = (cellSize + 13) / 659 * windowHeight + 'px'
     head.style.height = (cellSize + 8) / 659 * windowHeight + 'px'
   }
@@ -1084,7 +1078,7 @@ function GameOver() { //游戏结束
   drawGame()
   if (totalScore > maxScore) {
     maxScore = totalScore
-    localStorage.setItem(localStorageString, maxScore)
+    localStorage.setItem(localStorageKey, maxScore)
   }
   if (maxScore > 99999) {
     maxScoreText.innerHTML = Math.floor(maxScore / 100) / 100 + '万'
@@ -1103,10 +1097,10 @@ function GameOver() { //游戏结束
   }
   else if (totalScore < bound2) {
     gameOverPanel.style.backgroundImage = 'url(./assets/gameOverPanel2.png)'
-    gameOverPanel.style.width = goWidth_tmp + 'px'
-    gameOverPanel.style.backgroundSize = goWidth_tmp + 'px ' + goHeight + 'px'
-    gameOverPanelContainer.style.width = goWidth_tmp + 'px'
-    gameOverPanelContainer.style.backgroundSize = goWidth_tmp + 'px ' + goHeight + 'px'
+    gameOverPanel.style.width = goWidth + 'px'
+    gameOverPanel.style.backgroundSize = goWidth + 'px ' + goHeight + 'px'
+    gameOverPanelContainer.style.width = goWidth + 'px'
+    gameOverPanelContainer.style.backgroundSize = goWidth + 'px ' + goHeight + 'px'
   }
   else {
     gameOverPanel.style.backgroundImage = 'url(./assets/gameOverPanel3.png)'
